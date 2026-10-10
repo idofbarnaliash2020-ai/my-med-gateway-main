@@ -30,7 +30,7 @@ Install Node.js and npm if required by the project.
 
 Installation
 
-Clone this repository: git clone https://github.com/idofbarnaliash2020-ai/MedQure1.git
+Clone this repository: git clone https://github.com/idofbarnaliash2020-ai/my-med-gateway-main
 Open the project directory: cd MediResQ
 Install dependencies: npm install
 Start the development server: npm run dev
