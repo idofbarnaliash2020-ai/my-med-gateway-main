@@ -1,53 +1,76 @@
-MediResQ 🏥
+🏥 My Med Gateway
 
-AI-Powered Healthcare Assistance Platform
+A Smarter Gateway to Healthcare
 
-MediResQ is a web-based healthcare assistance platform designed to make healthcare information and support more accessible through an easy-to-use interface.
+Live Demo: "https://my-med-gateway-main.vercel.app/" (https://my-med-gateway-main.vercel.app/)
 
-🎯 Project Overview
+📌 About the Project
 
-The goal of MediResQ is to simplify access to healthcare-related information and provide users with a convenient digital platform for healthcare assistance.
+My Med Gateway is a healthcare-focused web application designed to make healthcare-related information and digital services more accessible through a user-friendly interface.
+
+The project aims to provide a convenient digital experience for users while exploring features such as secure access, role-based functionality, and streamlined healthcare workflows.
+
+The application is deployed on Vercel and can be accessed through the live demo link above.
 
 ✨ Key Features
 
-User-Friendly Interface: Simple and accessible website design.
-AI-Powered Assistance: Designed to support healthcare-related queries using AI.
-Accessible Information: Helps users explore relevant healthcare information.
-Responsive Design: Designed for convenient use across different screen sizes.
+- User Authentication: Login and registration interface for user access.
+- OTP Verification: OTP-based verification workflow, where configured and supported.
+- Role-Based Access: A foundation for organizing application features according to user roles.
+- Healthcare-Focused Interface: A web experience designed around healthcare-related use cases.
+- Responsive Design: Intended to provide a convenient experience across desktop and mobile devices.
+- Live Deployment: Hosted on Vercel for easy access and demonstration.
+
+Note: Feature availability depends on the current implementation and configuration of the deployed application.
+
 🛠️ Technology Stack
 
-Add the technologies actually used in this project, such as:
+The exact technologies should be confirmed from the project source code.
 
-Frontend: React, TypeScript, Vite
-Styling: Tailwind CSS
-AI Integration: Add the AI service used in the project
-Backend/Database: Add if implemented
+- Frontend: JavaScript/TypeScript and a web UI framework, as configured in the project
+- Deployment: Vercel
+- Version Control: Git and GitHub
+
+🌐 Live Demo
+
+Explore the deployed application:
+
+👉 "My Med Gateway — Live Website" (https://my-med-gateway-main.vercel.app/)
+
 🚀 Getting Started
 
-Prerequisites
+To run the project locally, first clone the repository:https://github.com/idofbarnaliash2020-ai/my-med-gateway-main
+cd my-med-gateway-main
 
-Install Node.js and npm if required by the project.
+Install the dependencies using the package manager configured by the project. For an npm-based project:
 
-Installation
+npm install
+npm run dev
 
-Clone this repository: git clone https://github.com/idofbarnaliash2020-ai/my-med-gateway-main
-Open the project directory: cd MediResQ
-Install dependencies: npm install
-Start the development server: npm run dev
-Follow the project configuration and environment-variable requirements if additional setup is needed.
+Then open the local URL shown in the terminal.
 
-🔒 Security & Disclaimer
+Prerequisites: Node.js and Git, along with any environment variables or services required by the application.
 
-Do not commit API keys, passwords, or private credentials to this repository.
+🔐 Security
 
-MediResQ is a project prototype and is not a substitute for professional medical advice, diagnosis, or treatment.
+- Keep API keys, passwords, OTP provider credentials, and other secrets out of the repository.
+- Store required secrets in environment variables.
+- Configure authentication and verification services securely before production use.
 
-🎓 Project Information
+🔮 Future Improvements
 
-Project Name: MediResQ
-Purpose: HackOverflow Project Submission
-Repository: GitHub
-👥 Contributors
+- Enhanced authentication and account verification
+- Improved role-based dashboards
+- Better healthcare workflow management
+- Additional validation, error handling, and security checks
+- Expanded testing and deployment monitoring
 
-Add the names of the project team members here. Barnali Ash Soumayan Mitra Arya Agarwal
-Made with ❤️ for accessible healthcare.
+👩‍💻 Project Information
+
+Project Name: My Med Gateway
+Deployment Platform: Vercel
+Repository:https://github.com/idofbarnaliash2020-ai/my-med-gateway-main
+
+---
+
+Built as a web development project focused on improving the digital healthcare experience.
