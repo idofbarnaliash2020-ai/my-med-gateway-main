@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, BedDouble, Mail, MapPin, Navigation, Phone, Stethoscope, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, BedDouble, Mail, MapPin, Navigation, Phone, Stethoscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoBadge, DemoNotice, Stars, directionsUrl } from "@/components/common";
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/hospitals/$id")({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Hospital not found — MediResQ" }, { name: "robots", content: "noindex" }] };
     const t = `${loaderData.hospital.name} — MediResQ`;
-    const d = `Facilities, specialities and sample bed availability for ${loaderData.hospital.name}.`;
+    const d = `${loaderData.hospital.name} in ${loaderData.hospital.city}, ${loaderData.hospital.state}. Contact details and live availability are not verified.`;
     return { meta: [{ title: t }, { name: "description", content: d }, { property: "og:title", content: t }, { property: "og:description", content: d }] };
   },
   notFoundComponent: () => (
@@ -31,51 +31,72 @@ export const Route = createFileRoute("/hospitals/$id")({
 function HospitalDetail() {
   const { hospital: h } = Route.useLoaderData();
   const docs = doctors.filter((d) => d.hospitalId === h.id);
-  const beds = [
-    { label: "General", free: h.beds.general },
-    { label: "ICU", free: h.beds.icu },
-    { label: "Emergency", free: h.beds.emergency },
-  ];
+  const bedData = h.beds;
+  const beds = bedData
+    ? [
+        { label: "General", free: bedData.general },
+        { label: "ICU", free: bedData.icu },
+        { label: "Emergency", free: bedData.emergency },
+      ]
+    : [];
   return (
     <div className="space-y-6">
       <Link to="/hospitals" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> All hospitals</Link>
       <div className="rounded-3xl border bg-card p-6 shadow-card">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2"><span className="text-xs font-semibold uppercase tracking-wide text-teal">{h.type} hospital</span><DemoBadge /></div>
+            <div className="flex items-center gap-2"><span className="text-xs font-semibold uppercase tracking-wide text-teal">{h.type} hospital</span><DemoBadge>Directory only</DemoBadge></div>
             <h1 className="mt-1 text-2xl font-bold text-primary sm:text-3xl">{h.name}</h1>
-            <div className="mt-2"><Stars value={h.rating} /></div>
+            {h.rating !== null && <div className="mt-2"><Stars value={h.rating} /></div>}
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button asChild variant="teal"><a href={directionsUrl(h.lat, h.lng)} target="_blank" rel="noreferrer"><Navigation /> Get directions</a></Button>
+            <Button asChild variant="teal"><a href={directionsUrl(`${h.name}, ${h.city}, ${h.state}, India`)} target="_blank" rel="noreferrer"><Navigation /> Get directions</a></Button>
             <Button asChild variant="emergency"><Link to="/ambulance" search={{ destination: h.id }}>Request ambulance (simulated)</Link></Button>
           </div>
         </div>
         <div className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
-          <p className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-teal" />{h.address}</p>
-          <a href={`tel:${h.phone.replace(/\s/g, "")}`} className="flex gap-2 hover:underline"><Phone className="h-4 w-4 text-teal" />{h.phone} (sample)</a>
-          <a href={`mailto:${h.email}`} className="flex gap-2 hover:underline"><Mail className="h-4 w-4 text-teal" />{h.email}</a>
+          <p className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-teal" />{h.city}, {h.state}</p>
+          {h.phone ? (
+            <a href={`tel:${h.phone.replace(/\s/g, "")}`} className="flex gap-2 hover:underline"><Phone className="h-4 w-4 text-teal" />{h.phone}</a>
+          ) : (
+            <p className="flex gap-2 text-muted-foreground"><Phone className="h-4 w-4 text-teal" />Contact number not provided or verified</p>
+          )}
+          {h.email ? (
+            <a href={`mailto:${h.email}`} className="flex gap-2 hover:underline"><Mail className="h-4 w-4 text-teal" />{h.email}</a>
+          ) : (
+            <p className="flex gap-2 text-muted-foreground"><Mail className="h-4 w-4 text-teal" />Email address not provided or verified</p>
+          )}
         </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <section className="rounded-2xl border bg-card p-5 shadow-card lg:col-span-2">
-          <h2 className="flex items-center gap-2 font-bold text-primary"><BedDouble className="h-5 w-5 text-teal" /> Bed availability <span className="text-xs font-normal text-muted-foreground">(sample, last updated: demo)</span></h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-3">
-            {beds.map((b) => (
-              <div key={b.label} className="rounded-xl bg-muted p-4">
-                <p className="text-sm text-muted-foreground">{b.label}</p>
-                <p className={`text-3xl font-bold ${b.free === 0 ? "text-emergency" : "text-primary"}`}>{b.free}</p>
-                <p className="text-xs text-muted-foreground">beds free</p>
+          <h2 className="flex items-center gap-2 font-bold text-primary"><BedDouble className="h-5 w-5 text-teal" /> Bed availability <span className="text-xs font-normal text-muted-foreground">(not live)</span></h2>
+          {bedData ? (
+            <>
+              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                {beds.map((b) => (
+                  <div key={b.label} className="rounded-xl bg-muted p-4">
+                    <p className="text-sm text-muted-foreground">{b.label}</p>
+                    <p className={`text-3xl font-bold ${b.free === 0 ? "text-emergency" : "text-primary"}`}>{b.free}</p>
+                    <p className="text-xs text-muted-foreground">beds free</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <p className="mt-4 text-sm text-muted-foreground">Total capacity: {h.beds.total} beds</p>
-          <Progress value={((h.beds.total - beds.reduce((a, b) => a + b.free, 0)) / h.beds.total) * 100} className="mt-2" />
+              <p className="mt-4 text-sm text-muted-foreground">Total capacity: {bedData.total} beds</p>
+              <Progress value={((bedData.total - beds.reduce((a, b) => a + b.free, 0)) / bedData.total) * 100} className="mt-2" />
+            </>
+          ) : (
+            <p className="mt-3 text-sm text-muted-foreground">Live bed availability and total capacity are not provided or verified.</p>
+          )}
           <h3 className="mt-6 font-semibold">Specialities</h3>
-          <div className="mt-2 flex flex-wrap gap-2">{h.specialities.map((s) => <span key={s} className="rounded-full bg-accent px-3 py-1 text-sm text-accent-foreground">{s}</span>)}</div>
+          {h.specialities ? (
+            <div className="mt-2 flex flex-wrap gap-2">{h.specialities.map((s) => <span key={s} className="rounded-full bg-accent px-3 py-1 text-sm text-accent-foreground">{s}</span>)}</div>
+          ) : <p className="mt-2 text-sm text-muted-foreground">Not provided or verified.</p>}
           <h3 className="mt-6 font-semibold">Facilities</h3>
-          <ul className="mt-2 grid gap-2 sm:grid-cols-2">{h.facilities.map((f) => <li key={f} className="flex items-center gap-2 text-sm"><CheckCircle2 className="h-4 w-4 text-success" />{f}</li>)}</ul>
+          {h.facilities ? (
+            <ul className="mt-2 grid gap-2 sm:grid-cols-2">{h.facilities.map((f) => <li key={f} className="text-sm">{f}</li>)}</ul>
+          ) : <p className="mt-2 text-sm text-muted-foreground">Not provided or verified.</p>}
         </section>
         <div className="space-y-6">
           <SchematicMap className="aspect-square" activeId={h.id} points={[{ id: h.id, x: h.x, y: h.y, label: h.name, tone: "teal", size: 22 }]} />
@@ -88,7 +109,7 @@ function HospitalDetail() {
           </section>
         </div>
       </div>
-      <DemoNotice>This is a fictional hospital profile. Always call the hospital directly to confirm availability before travelling.</DemoNotice>
+      <DemoNotice>This directory entry lists the institution name and city/state only. Contact details, facilities, specialities and current availability are not verified; confirm information with the institution before travelling.</DemoNotice>
     </div>
   );
 }

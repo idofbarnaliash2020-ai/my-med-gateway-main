@@ -1,10 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Ambulance, Bell, BedDouble, Building2, FileHeart, LineChart, Pill, Phone, Siren, Stethoscope, ArrowRight } from "lucide-react";
+import { Ambulance, Bell, Building2, FileHeart, LineChart, Pill, Phone, Siren, Stethoscope, ArrowRight, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Progress } from "@/components/ui/progress";
 import { DemoBadge, DemoNotice } from "@/components/common";
-import { hospitals, availableBeds } from "@/data/hospitals";
+import { hospitals } from "@/data/hospitals";
 import { notifications } from "@/data/health";
 
 export const Route = createFileRoute("/")({
@@ -20,7 +19,8 @@ export const Route = createFileRoute("/")({
 });
 
 const quick = [
-  { to: "/hospitals", label: "Hospitals", desc: "Beds & facilities", icon: Building2 },
+  { to: "/hospitals", label: "Hospitals", desc: "Pan-India directory", icon: Building2 },
+  { to: "/patient-login", label: "Patient Login", desc: "Prototype demo verification", icon: UserRound },
   { to: "/ambulance", label: "Ambulances", desc: "Simulated request", icon: Ambulance },
   { to: "/doctors", label: "Doctors", desc: "Sample directory", icon: Stethoscope },
   { to: "/medicines", label: "Medicines", desc: "Info & pharmacies", icon: Pill },
@@ -36,12 +36,6 @@ const contacts = [
 ];
 
 function Home() {
-  const totals = hospitals.reduce(
-    (a, h) => ({ general: a.general + h.beds.general, icu: a.icu + h.beds.icu, emergency: a.emergency + h.beds.emergency, total: a.total + h.beds.total }),
-    { general: 0, icu: 0, emergency: 0, total: 0 },
-  );
-  const free = totals.general + totals.icu + totals.emergency;
-
   return (
     <div className="space-y-8">
       <section className="bg-hero relative overflow-hidden rounded-3xl p-6 text-primary-foreground sm:p-10">
@@ -50,7 +44,7 @@ function Home() {
             <span className="inline-flex rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-semibold">Prototype · Demo mode</span>
             <h1 className="mt-4 text-3xl font-extrabold leading-tight sm:text-5xl">Healthcare, connected in one place.</h1>
             <p className="mt-3 max-w-xl text-primary-foreground/80">
-              MediResQ shows how patients, hospitals, doctors, pharmacies, ambulances and health authorities could work together. Everything here uses sample data.
+              MediResQ shows how patients, hospitals, doctors, pharmacies, ambulances and health authorities could work together. Hospital listings show names and cities; operational data is not verified.
             </p>
           </div>
           <div className="flex flex-col items-center gap-3 rounded-2xl bg-primary-foreground/10 p-6 text-center backdrop-blur">
@@ -98,31 +92,21 @@ function Home() {
       <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <section className="rounded-2xl border bg-card p-5 shadow-card">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-primary"><BedDouble className="h-5 w-5 text-teal" /> Bed availability</h2>
-            <DemoBadge>Sample figures, not live</DemoBadge>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            {[["General", totals.general], ["ICU", totals.icu], ["Emergency", totals.emergency]].map(([l, v]) => (
-              <div key={l} className="rounded-xl bg-muted p-3 text-center">
-                <p className="text-2xl font-bold text-primary">{v}</p>
-                <p className="text-xs text-muted-foreground">{l} free</p>
-              </div>
-            ))}
+            <h2 className="flex items-center gap-2 text-lg font-bold text-primary"><Building2 className="h-5 w-5 text-teal" /> Pan-India hospital directory</h2>
+            <DemoBadge>Names and locations only</DemoBadge>
           </div>
           <ul className="mt-4 space-y-3">
             {hospitals.slice(0, 4).map((h) => {
-              const f = availableBeds(h);
               return (
                 <li key={h.id}>
                   <Link to="/hospitals/$id" params={{ id: h.id }} className="block rounded-lg p-2 hover:bg-muted">
-                    <div className="flex justify-between text-sm"><span className="font-medium">{h.name}</span><span className={f === 0 ? "font-semibold text-emergency" : "text-muted-foreground"}>{f} free</span></div>
-                    <Progress value={100 - (f / h.beds.total) * 100 * 5} className="mt-1 h-1.5" />
+                    <div className="flex justify-between gap-2 text-sm"><span className="font-medium">{h.name}</span><span className="shrink-0 text-muted-foreground">{h.city}, {h.state}</span></div>
                   </Link>
                 </li>
               );
             })}
           </ul>
-          <p className="mt-3 text-xs text-muted-foreground">{free} beds free across {hospitals.length} sample hospitals.</p>
+          <p className="mt-3 text-xs text-muted-foreground">{hospitals.length} directory listings across {new Set(hospitals.map((h) => h.state)).size} states/territories. Contact details and live availability are not verified.</p>
           <Button asChild variant="outline" className="mt-3 w-full"><Link to="/hospitals">Find a hospital <ArrowRight /></Link></Button>
         </section>
 
@@ -140,7 +124,7 @@ function Home() {
       </div>
 
       <DemoNotice>
-        <strong>Demo mode:</strong> hospitals, beds, doctors, pharmacies and notifications are fictional sample data. Helpline numbers 112, 108, 100 and 101 are real Indian public services — use them in a genuine emergency.
+        <strong>Demo mode:</strong> hospital directory entries show names and cities only. Bed availability, hospital contacts, doctors, pharmacies and notifications are not live verified information. Helpline numbers 112, 108, 100 and 101 are real Indian public services — use them in a genuine emergency.
       </DemoNotice>
     </div>
   );

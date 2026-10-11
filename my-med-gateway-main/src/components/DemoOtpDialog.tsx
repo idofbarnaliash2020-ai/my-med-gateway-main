@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import { generateDemoOtp } from "@/lib/demo-otp";
 
 const OTP_LENGTH = 6;
 const OTP_TTL_MS = 5 * 60 * 1000;
@@ -21,12 +22,6 @@ interface DemoOtpDialogProps {
   purpose: string;
   destination: string;
   onVerified: () => void;
-}
-
-function generateDemoCode() {
-  const value = new Uint32Array(1);
-  window.crypto.getRandomValues(value);
-  return String(value[0]! % 1_000_000).padStart(OTP_LENGTH, "0");
 }
 
 export function DemoOtpDialog({
@@ -46,7 +41,7 @@ export function DemoOtpDialog({
   useEffect(() => {
     if (!open) return;
 
-    setCode(generateDemoCode());
+    setCode(generateDemoOtp());
     setValue("");
     setExpiresAt(Date.now() + OTP_TTL_MS);
     setAttempts(0);
@@ -102,7 +97,7 @@ export function DemoOtpDialog({
           </p>
         </div>
         <p className="text-sm">
-          Demo OTP (not sent):{" "}
+          Demo OTP (Prototype Only, not sent):{" "}
           <strong data-testid="demo-otp-code" className="font-mono tracking-widest">
             {code}
           </strong>

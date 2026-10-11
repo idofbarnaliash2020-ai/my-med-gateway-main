@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { CardSkeletonGrid, DemoNotice, EmptyState, PageHeader, Stars, useSimulatedLoading } from "@/components/common";
 import { doctors, doctorCities, doctorSpecialities, type Doctor } from "@/data/doctors";
-import { getHospital } from "@/data/hospitals";
 
 export const Route = createFileRoute("/doctors")({
   head: () => ({
@@ -86,7 +85,7 @@ function DoctorsPage() {
               <DialogDescription>{selected.speciality} · {selected.qualifications}</DialogDescription>
             </DialogHeader>
             <ul className="space-y-2 text-sm">
-              <li className="flex gap-2"><MapPin className="h-4 w-4 text-teal" />{getHospital(selected.hospitalId)?.name}, {selected.city}</li>
+              <li className="flex gap-2"><MapPin className="h-4 w-4 text-teal" />{selected.city} · hospital affiliation not verified</li>
               <li className="flex gap-2"><Clock className="h-4 w-4 text-teal" />{selected.availability}</li>
               <li className="flex gap-2"><Languages className="h-4 w-4 text-teal" />{selected.languages.join(", ")}</li>
               <li>Consultation fee: <strong>₹{selected.fee}</strong> · {selected.mode.join(" / ")}</li>

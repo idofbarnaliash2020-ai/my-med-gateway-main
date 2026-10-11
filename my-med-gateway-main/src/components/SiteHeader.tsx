@@ -7,6 +7,7 @@ import { Logo } from "./common";
 
 export const navItems = [
   { to: "/hospitals", label: "Hospitals" },
+  { to: "/patient-login", label: "Patient Login" },
   { to: "/ambulance", label: "Ambulance" },
   { to: "/doctors", label: "Doctors" },
   { to: "/medicines", label: "Medicines" },
@@ -19,7 +20,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
       <div className="bg-warning-soft py-1 text-center text-xs font-medium text-warning">
-        Prototype · all data is sample data · not for real emergencies — call 112
+        Prototype · operational hospital details are not verified · not for real emergencies — call 112
       </div>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
         <Link to="/" aria-label="MediResQ home"><Logo /></Link>
@@ -63,7 +64,7 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
         <Logo />
         <p className="max-w-xl">
-          MediResQ is a student innovation prototype. It uses fictional sample data, does not dispatch ambulances, does not verify doctors, and does not store real health information. In an emergency, call <strong className="text-foreground">112</strong> (India).
+          MediResQ is a student innovation prototype. Hospital entries list institution names and cities; contact details and current availability are not verified. It does not dispatch ambulances, verify doctors, or store real health information. In an emergency, call <strong className="text-foreground">112</strong> (India).
         </p>
       </div>
     </footer>

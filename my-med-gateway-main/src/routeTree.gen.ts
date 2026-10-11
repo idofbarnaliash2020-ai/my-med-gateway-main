@@ -14,6 +14,8 @@ import { Route as AmbulanceRouteImport } from './routes/ambulance'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DoctorsRouteImport } from './routes/doctors'
 import { Route as MedicinesRouteImport } from './routes/medicines'
+import { Route as PatientDashboardRouteImport } from './routes/patient-dashboard'
+import { Route as PatientLoginRouteImport } from './routes/patient-login'
 import { Route as RecordsRouteImport } from './routes/records'
 import { Route as HospitalsIndexRouteImport } from './routes/hospitals.index'
 import { Route as HospitalsIdRouteImport } from './routes/hospitals.$id'
@@ -43,6 +45,16 @@ const MedicinesRoute = MedicinesRouteImport.update({
   path: '/medicines',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PatientDashboardRoute = PatientDashboardRouteImport.update({
+  id: '/patient-dashboard',
+  path: '/patient-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PatientLoginRoute = PatientLoginRouteImport.update({
+  id: '/patient-login',
+  path: '/patient-login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecordsRoute = RecordsRouteImport.update({
   id: '/records',
   path: '/records',
@@ -65,6 +77,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/doctors': typeof DoctorsRoute
   '/medicines': typeof MedicinesRoute
+  '/patient-dashboard': typeof PatientDashboardRoute
+  '/patient-login': typeof PatientLoginRoute
   '/records': typeof RecordsRoute
   '/hospitals/$id': typeof HospitalsIdRoute
   '/hospitals/': typeof HospitalsIndexRoute
@@ -75,6 +89,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/doctors': typeof DoctorsRoute
   '/medicines': typeof MedicinesRoute
+  '/patient-dashboard': typeof PatientDashboardRoute
+  '/patient-login': typeof PatientLoginRoute
   '/records': typeof RecordsRoute
   '/hospitals/$id': typeof HospitalsIdRoute
   '/hospitals': typeof HospitalsIndexRoute
@@ -86,6 +102,8 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/doctors': typeof DoctorsRoute
   '/medicines': typeof MedicinesRoute
+  '/patient-dashboard': typeof PatientDashboardRoute
+  '/patient-login': typeof PatientLoginRoute
   '/records': typeof RecordsRoute
   '/hospitals/$id': typeof HospitalsIdRoute
   '/hospitals/': typeof HospitalsIndexRoute
@@ -98,6 +116,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/doctors'
     | '/medicines'
+    | '/patient-dashboard'
+    | '/patient-login'
     | '/records'
     | '/hospitals/$id'
     | '/hospitals/'
@@ -108,6 +128,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/doctors'
     | '/medicines'
+    | '/patient-dashboard'
+    | '/patient-login'
     | '/records'
     | '/hospitals/$id'
     | '/hospitals'
@@ -118,6 +140,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/doctors'
     | '/medicines'
+    | '/patient-dashboard'
+    | '/patient-login'
     | '/records'
     | '/hospitals/$id'
     | '/hospitals/'
@@ -129,6 +153,8 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DoctorsRoute: typeof DoctorsRoute
   MedicinesRoute: typeof MedicinesRoute
+  PatientDashboardRoute: typeof PatientDashboardRoute
+  PatientLoginRoute: typeof PatientLoginRoute
   RecordsRoute: typeof RecordsRoute
   HospitalsIdRoute: typeof HospitalsIdRoute
   HospitalsIndexRoute: typeof HospitalsIndexRoute
@@ -171,6 +197,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedicinesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/patient-dashboard': {
+      id: '/patient-dashboard'
+      path: '/patient-dashboard'
+      fullPath: '/patient-dashboard'
+      preLoaderRoute: typeof PatientDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/patient-login': {
+      id: '/patient-login'
+      path: '/patient-login'
+      fullPath: '/patient-login'
+      preLoaderRoute: typeof PatientLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/records': {
       id: '/records'
       path: '/records'
@@ -201,6 +241,8 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DoctorsRoute: DoctorsRoute,
   MedicinesRoute: MedicinesRoute,
+  PatientDashboardRoute: PatientDashboardRoute,
+  PatientLoginRoute: PatientLoginRoute,
   RecordsRoute: RecordsRoute,
   HospitalsIdRoute: HospitalsIdRoute,
   HospitalsIndexRoute: HospitalsIndexRoute,

@@ -14,6 +14,8 @@ The goal of MediResQ is to simplify access to healthcare-related information and
 - AI-Powered Assistance: Designed to support healthcare-related queries using AI.
 - Accessible Information: Helps users explore relevant healthcare information.
 - Responsive Design: Designed for convenient use across different screen sizes.
+- Pan-India hospital directory: Lists ten institutions by name and city/state; contact details, facilities and live bed availability are not supplied or verified.
+- Patient login prototype: Generates a temporary OTP for display in the browser. No SMS is sent and the code does not verify identity.
 
 🛠️ Technology Stack
 
@@ -48,6 +50,8 @@ Follow the project configuration and environment-variable requirements if additi
 Do not commit API keys, passwords, or private credentials to this repository.
 
 MediResQ is a project prototype and is not a substitute for professional medical advice, diagnosis, or treatment.
+
+Patient Login is a demonstration flow only: its verified-session marker is held in the current browser tab, and it is not production authentication. Do not enter real personal or medical information. Emergency services remain available without patient login.
 
 🎓 Project Information
 

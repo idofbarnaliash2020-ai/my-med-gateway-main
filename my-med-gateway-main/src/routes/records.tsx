@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DemoOtpDialog } from "@/components/DemoOtpDialog";
+import { PatientSessionGate } from "@/components/PatientSessionGate";
 import { EmptyState, PageHeader } from "@/components/common";
 import { samplePatient as p } from "@/data/health";
 import { doctors } from "@/data/doctors";
@@ -17,12 +18,12 @@ export const Route = createFileRoute("/records")({
   head: () => ({
     meta: [
       { title: "Medical Records (Demo) — MediResQ" },
-      { name: "description", content: "Demo of a fictional patient record with a consent-based sharing interface. No real health data is stored." },
+      { name: "description", content: "Prototype-only fictional patient records, gated by an on-screen demo OTP flow. No real health data is stored." },
       { property: "og:title", content: "Medical Records (Demo) — MediResQ" },
       { property: "og:description", content: "Consent-based medical record sharing demo with a fictional patient." },
     ],
   }),
-  component: RecordsPage,
+  component: () => <PatientSessionGate><RecordsPage /></PatientSessionGate>,
 });
 
 const scopes = ["Allergies", "Conditions", "Prescriptions", "Visit history"] as const;
@@ -63,10 +64,10 @@ function RecordsPage() {
       <div role="note" className="mb-6 flex gap-3 rounded-xl border-2 border-warning/40 bg-warning-soft p-4 text-sm">
         <AlertTriangle className="h-5 w-5 shrink-0 text-warning" />
         <p>
-          <strong>DEMO ONLY.</strong> This page shows a fictional patient. There is no login,
-          database or real access control; the on-screen OTP is a demonstration and does not secure
-          records. Do not enter real health information. Secure authentication, encrypted storage
-          and audited access (e.g. ABDM-compliant) are future work.
+          <strong>DEMO ONLY.</strong> Access follows a prototype on-screen OTP flow, not real identity
+          verification or secure access control. This page shows a fictional patient and stores no
+          real health information. Production authentication, encrypted storage and audited access
+          are not implemented.
         </p>
       </div>
 

@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { DemoBadge, PageHeader } from "@/components/common";
 import { SchematicMap } from "@/components/SchematicMap";
 import { diseaseTrends, hotspots, regionCapacity, simulatedAlerts } from "@/data/health";
+import { hospitals } from "@/data/hospitals";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -45,7 +46,7 @@ function Dashboard() {
   const cards = [
     { label: "Reported cases (period)", value: totalCases.toLocaleString("en-IN"), icon: Activity },
     { label: "Bed occupancy", value: `${Math.round((occ.o / occ.t) * 100)}%`, icon: BedDouble },
-    { label: "Reporting hospitals", value: "48", icon: Building2 },
+    { label: "Directory hospitals listed", value: String(hospitals.length), icon: Building2 },
     { label: "Open signals", value: String(simulatedAlerts.length), icon: AlertTriangle },
   ];
 
@@ -53,7 +54,7 @@ function Dashboard() {
     <div className="space-y-6">
       <PageHeader
         title="Government Health Dashboard"
-        subtitle="Kolkata · illustrative sample surveillance view; figures are not Kolkata-specific."
+        subtitle="Pan-India · illustrative sample surveillance view; figures are not location-specific."
         icon={<LineIcon />}
         actions={
           <div className="flex items-center gap-2">
