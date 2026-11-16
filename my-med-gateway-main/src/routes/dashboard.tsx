@@ -54,7 +54,7 @@ function Dashboard() {
     <div className="space-y-6">
       <PageHeader
         title="Government Health Dashboard"
-        subtitle="Pan-India · illustrative sample surveillance view; figures are not location-specific."
+        subtitle="Kolkata, West Bengal · fictional sample statistics for demonstration only. Other districts are planned expansion areas."
         icon={<LineIcon />}
         actions={
           <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ function Dashboard() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-2xl border bg-card p-5 shadow-card">
-          <h2 className="mb-3 font-bold text-primary">Hospital bed capacity by region</h2>
+          <h2 className="mb-3 font-bold text-primary">Illustrative hospital bed capacity across Kolkata and nearby districts</h2>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={capData} margin={{ left: -20 }}>
