@@ -24,7 +24,7 @@ export const Route = createFileRoute("/hospitals/")({
 
 function HospitalFinder() {
   const [q, setQ] = useState("");
-  const [loc, setLoc] = useState("");
+  const [loc, setLoc] = useState("Kolkata");
   const [spec, setSpec] = useState("all");
   const [type, setType] = useState("all");
   const [bedsOnly, setBedsOnly] = useState(false);
@@ -37,13 +37,13 @@ function HospitalFinder() {
     (spec === "all" || h.specialities?.includes(spec) === true) &&
     (type === "all" || h.type === type) &&
     (!bedsOnly || (availableBeds(h) ?? 0) > 0),
-  ), [q, loc, spec, type, bedsOnly]);
+  ).sort((a, b) => Number(b.state === "West Bengal") - Number(a.state === "West Bengal") || a.city.localeCompare(b.city)), [q, loc, spec, type, bedsOnly]);
 
-  const reset = () => { setQ(""); setLoc(""); setSpec("all"); setType("all"); setBedsOnly(false); };
+  const reset = () => { setQ(""); setLoc("Kolkata"); setSpec("all"); setType("all"); setBedsOnly(false); };
 
   return (
     <div>
-      <PageHeader title="Hospital Finder" subtitle="Search hospital directory listings by name, city, state or speciality." icon={<Building2 />} actions={<DemoBadge>Directory listings</DemoBadge>} />
+      <PageHeader title="Hospital Finder" subtitle="Kolkata and West Bengal hospitals are shown first. Other Indian locations remain searchable." icon={<Building2 />} actions={<DemoBadge>Directory listings</DemoBadge>} />
       <div className="mb-6 grid gap-3 rounded-2xl border bg-card p-4 shadow-card md:grid-cols-2 lg:grid-cols-5">
         <div className="relative lg:col-span-2">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -51,7 +51,7 @@ function HospitalFinder() {
         </div>
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={loc} onChange={(e) => setLoc(e.target.value)} placeholder="City or state" className="pl-9" aria-label="Location" />
+          <Input value={loc} onChange={(e) => setLoc(e.target.value)} placeholder="City or state (default: Kolkata)" className="pl-9" aria-label="Location" />
         </div>
         <Select value={spec} onValueChange={setSpec}>
           <SelectTrigger aria-label="Speciality"><SelectValue /></SelectTrigger>
@@ -114,7 +114,7 @@ function HospitalFinder() {
         <aside className="xl:sticky xl:top-28 xl:self-start">
           <SchematicMap className="aspect-square" activeId={active} onSelect={setActive}
             points={results.map((h) => ({ id: h.id, x: h.x, y: h.y, label: h.name, tone: availableBeds(h) === 0 ? "emergency" : "teal" }))} />
-          <p className="mt-2 text-xs text-muted-foreground">Markers show directory entries only and are not precise location pins. Bed availability is not verified.</p>
+          <p className="mt-2 text-xs text-muted-foreground">Kolkata-first directory. All displayed bed counts are simulated competition-demo values, not hospital-confirmed live availability.</p>
         </aside>
       </div>
     </div>
