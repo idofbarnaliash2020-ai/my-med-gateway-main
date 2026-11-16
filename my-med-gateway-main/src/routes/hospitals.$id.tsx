@@ -83,7 +83,12 @@ function HospitalDetail() {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">Total capacity: {bedData.total} beds (illustrative)</p>\n              <div className="mt-3 rounded-lg border border-warning/40 bg-warning-soft p-3 text-sm">\n                <p className="font-semibold">Availability status: {h.bedStatus}</p>\n                <p className="text-xs text-muted-foreground">Last updated: {h.bedLastUpdated ?? "Not reported"}</p>\n                <p className="mt-1 text-xs">These figures are simulated for the competition demo and are not confirmed by this hospital.</p>\n              </div>
+              <p className="mt-4 text-sm text-muted-foreground">Total capacity: {bedData.total} beds (illustrative)</p>
+              <div className="mt-3 rounded-lg border border-warning/40 bg-warning-soft p-3 text-sm">
+                <p className="font-semibold">Availability status: {h.bedStatus}</p>
+                <p className="text-xs text-muted-foreground">Last updated: {h.bedLastUpdated ?? "Not reported"}</p>
+                <p className="mt-1 text-xs">These figures are simulated for the competition demo and are not confirmed by this hospital.</p>
+              </div>
               <Progress value={((bedData.total - beds.reduce((a, b) => a + b.free, 0)) / bedData.total) * 100} className="mt-2" />
             </>
           ) : (
