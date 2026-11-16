@@ -30,7 +30,8 @@ const scopes = ["Allergies", "Conditions", "Prescriptions", "Visit history"] as 
 interface Grant { id: string; doctorId: string; scopes: string[]; duration: string; }
 type PendingGrant = Omit<Grant, "id">;
 
-function RecordsPage() {\n  const navigate = useNavigate();
+function RecordsPage() {
+  const navigate = useNavigate();
   const [grants, setGrants] = useState<Grant[]>([]);
   const [open, setOpen] = useState(false);
   const [otpOpen, setOtpOpen] = useState(false);
