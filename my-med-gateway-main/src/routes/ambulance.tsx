@@ -94,7 +94,7 @@ function AmbulancePage() {
       <div className="mx-auto max-w-xl space-y-6 text-center">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-success-soft text-success"><CheckCircle2 className="h-9 w-9" /></div>
         <h1 className="text-2xl font-bold text-primary">Simulated request recorded</h1>
-        <p className="text-muted-foreground">Reference <strong className="text-foreground">{confirmed}</strong>. This was a demonstration only — <strong className="text-foreground">no ambulance has been dispatched</strong> and no one has been notified.</p>
+        <p className="text-muted-foreground">Request ID: <strong className="text-foreground">{confirmed}</strong>. Status: <strong className="text-foreground">Recorded (simulated)</strong>. This is a demonstration only — <strong className="text-foreground">no ambulance has been dispatched</strong> and no one has been notified.</p>
         <div className="rounded-2xl border bg-card p-5 text-left text-sm shadow-card">
           <Summary data={data} hospitalName={hospitalName} />
         </div>
@@ -197,7 +197,7 @@ function AmbulancePage() {
 }
 
 function Summary({ data, hospitalName }: { data: FormData; hospitalName?: string | undefined }) {
-  const rows = [["Pickup", data.pickup], ["Destination", hospitalName], ["Category", data.category], ["Contact", `${data.name} · ${data.phone}`], ["Notes", data.notes || "—"]];
+  const rows = [["Request ID", "SIMULATED"], ["Pickup", data.pickup], ["Destination", hospitalName], ["Emergency category", data.category], ["Request status", "Recorded (simulated) — no ambulance dispatched"], ["Contact", `${data.name} · ${data.phone}`], ["Notes", data.notes || "—"]];
   return (
     <dl className="divide-y">
       {rows.map(([k, v]) => <div key={k} className="flex justify-between gap-4 py-2"><dt className="text-muted-foreground">{k}</dt><dd className="text-right font-medium">{v}</dd></div>)}
