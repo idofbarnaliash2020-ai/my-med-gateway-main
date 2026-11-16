@@ -95,9 +95,11 @@ function HospitalFinder() {
                     </div>
                     <p className="mt-2 flex gap-1.5 text-sm text-muted-foreground"><MapPin className="mt-0.5 h-4 w-4 shrink-0" />{h.city}, {h.state}</p>
                     {h.phone && <a href={`tel:${h.phone.replace(/\s/g, "")}`} className="mt-1 flex gap-1.5 text-sm text-muted-foreground hover:text-foreground">{h.phone}</a>}
-                    <div className="mt-3 flex items-center gap-2 rounded-lg bg-muted p-2 text-sm text-muted-foreground">
-                      <BedDouble className="h-4 w-4" />
-                      {f === null ? "Bed availability not provided or verified" : `${f} beds reported`}
+                    <div className="mt-3 rounded-lg bg-muted p-3 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground"><BedDouble className="h-4 w-4" />{f === null ? "Bed availability: Not reported" : `${f} beds available (simulated)`}</div>
+                      <div className="mt-2 grid grid-cols-3 gap-2 text-xs"><span>General: {h.beds?.general ?? "—"}</span><span>ICU: {h.beds?.icu ?? "—"}</span><span>Emergency: {h.beds?.emergency ?? "—"}</span></div>
+                      <p className="mt-2 text-xs font-medium">Status: {h.bedStatus}</p>
+                      <p className="text-xs text-muted-foreground">Last updated: {h.bedLastUpdated ?? "Not reported"}</p>
                     </div>
                     <div className="mt-4 flex gap-2 pt-1">
                       <Button asChild className="flex-1"><Link to="/hospitals/$id" params={{ id: h.id }}>View details</Link></Button>
