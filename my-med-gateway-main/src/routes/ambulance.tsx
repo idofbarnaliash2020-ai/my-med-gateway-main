@@ -196,8 +196,8 @@ function AmbulancePage() {
   );
 }
 
-function Summary({ data, hospitalName }: { data: FormData; hospitalName?: string | undefined }) {
-  const rows = [["Request ID", "SIMULATED"], ["Pickup", data.pickup], ["Destination", hospitalName], ["Emergency category", data.category], ["Request status", "Recorded (simulated) — no ambulance dispatched"], ["Contact", `${data.name} · ${data.phone}`], ["Notes", data.notes || "—"]];
+function Summary({ data, hospitalName, requestId }: { data: FormData; hospitalName?: string | undefined; requestId?: string | null }) {
+  const rows = [...(requestId ? [["Request ID", requestId]] : []), ["Pickup", data.pickup], ["Destination", hospitalName], ["Emergency category", data.category], ["Request status", requestId ? "Recorded (simulated) — no ambulance dispatched" : "Pending confirmation (simulated)"], ["Contact", `${data.name} · ${data.phone}`], ["Notes", data.notes || "—"]];
   return (
     <dl className="divide-y">
       {rows.map(([k, v]) => <div key={k} className="flex justify-between gap-4 py-2"><dt className="text-muted-foreground">{k}</dt><dd className="text-right font-medium">{v}</dd></div>)}
