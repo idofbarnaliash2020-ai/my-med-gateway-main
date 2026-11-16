@@ -96,7 +96,7 @@ function AmbulancePage() {
         <h1 className="text-2xl font-bold text-primary">Simulated request recorded</h1>
         <p className="text-muted-foreground">Request ID: <strong className="text-foreground">{confirmed}</strong>. Status: <strong className="text-foreground">Recorded (simulated)</strong>. This is a demonstration only — <strong className="text-foreground">no ambulance has been dispatched</strong> and no one has been notified.</p>
         <div className="rounded-2xl border bg-card p-5 text-left text-sm shadow-card">
-          <Summary data={data} hospitalName={hospitalName} />
+          <Summary data={data} hospitalName={hospitalName} requestId={confirmed} />
         </div>
         <div className="rounded-2xl border-2 border-emergency bg-emergency-soft p-5">
           <p className="font-semibold text-emergency">Real emergency? Call now:</p>
