@@ -14,9 +14,9 @@ export const Route = createFileRoute("/hospitals/")({
   head: () => ({
     meta: [
       { title: "Hospital Finder — MediResQ" },
-      { name: "description", content: "Search hospital directory listings across India by name, city and state." },
+      { name: "description", content: "Find hospitals in Kolkata and nearby West Bengal areas." },
       { property: "og:title", content: "Hospital Finder — MediResQ" },
-      { property: "og:description", content: "Search hospital directory listings across India by name, city and state." },
+      { property: "og:description", content: "Find hospitals in Kolkata and nearby West Bengal areas." },
     ],
   }),
   component: HospitalFinder,
@@ -24,7 +24,7 @@ export const Route = createFileRoute("/hospitals/")({
 
 function HospitalFinder() {
   const [q, setQ] = useState("");
-  const [loc, setLoc] = useState("Kolkata");
+  const [loc, setLoc] = useState("");
   const [spec, setSpec] = useState("all");
   const [type, setType] = useState("all");
   const [bedsOnly, setBedsOnly] = useState(false);
@@ -39,11 +39,11 @@ function HospitalFinder() {
     (!bedsOnly || (availableBeds(h) ?? 0) > 0),
   ).sort((a, b) => Number(b.state === "West Bengal") - Number(a.state === "West Bengal") || a.city.localeCompare(b.city)), [q, loc, spec, type, bedsOnly]);
 
-  const reset = () => { setQ(""); setLoc("Kolkata"); setSpec("all"); setType("all"); setBedsOnly(false); };
+  const reset = () => { setQ(""); setLoc(""); setSpec("all"); setType("all"); setBedsOnly(false); };
 
   return (
     <div>
-      <PageHeader title="Hospital Finder" subtitle="Kolkata and West Bengal hospitals are shown first. Other Indian locations remain searchable." icon={<Building2 />} actions={<DemoBadge>Directory listings</DemoBadge>} />
+      <PageHeader title="Hospital Finder" subtitle="Focused on Kolkata and nearby areas including Howrah, Salt Lake, New Town and Park Circus." icon={<Building2 />} actions={<DemoBadge>Directory listings</DemoBadge>} />
       <div className="mb-6 grid gap-3 rounded-2xl border bg-card p-4 shadow-card md:grid-cols-2 lg:grid-cols-5">
         <div className="relative lg:col-span-2">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -51,7 +51,7 @@ function HospitalFinder() {
         </div>
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={loc} onChange={(e) => setLoc(e.target.value)} placeholder="City or state (default: Kolkata)" className="pl-9" aria-label="Location" />
+          <Input value={loc} onChange={(e) => setLoc(e.target.value)} placeholder="Area (e.g. Kolkata, Howrah, Salt Lake)" className="pl-9" aria-label="Location" />
         </div>
         <Select value={spec} onValueChange={setSpec}>
           <SelectTrigger aria-label="Speciality"><SelectValue /></SelectTrigger>
@@ -71,7 +71,7 @@ function HospitalFinder() {
         </Select>
         <div className="flex items-center gap-2 lg:col-span-5">
           <Switch id="beds" checked={bedsOnly} onCheckedChange={setBedsOnly} />
-          <Label htmlFor="beds">Only show hospitals with verified bed counts</Label>
+          <Label htmlFor="beds">Only show hospitals with demo bed counts</Label>
           <span className="ml-auto text-sm text-muted-foreground">{results.length} result{results.length !== 1 && "s"}</span>
         </div>
       </div>
@@ -114,7 +114,7 @@ function HospitalFinder() {
         <aside className="xl:sticky xl:top-28 xl:self-start">
           <SchematicMap className="aspect-square" activeId={active} onSelect={setActive}
             points={results.map((h) => ({ id: h.id, x: h.x, y: h.y, label: h.name, tone: availableBeds(h) === 0 ? "emergency" : "teal" }))} />
-          <p className="mt-2 text-xs text-muted-foreground">Kolkata-first directory. All displayed bed counts are simulated competition-demo values, not hospital-confirmed live availability.</p>
+          <p className="mt-2 text-xs text-muted-foreground">Kolkata-region directory. All displayed bed counts are simulated competition-demo values, not hospital-confirmed live availability.</p>
         </aside>
       </div>
     </div>
