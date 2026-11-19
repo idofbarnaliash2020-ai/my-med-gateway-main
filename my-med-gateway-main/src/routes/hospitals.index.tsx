@@ -14,9 +14,9 @@ export const Route = createFileRoute("/hospitals/")({
   head: () => ({
     meta: [
       { title: "Hospital Finder — MediResQ" },
-      { name: "description", content: "Search hospital directory listings across India by name, city and state." },
+      { name: "description", content: "Find hospitals in Kolkata and nearby West Bengal areas." },
       { property: "og:title", content: "Hospital Finder — MediResQ" },
-      { property: "og:description", content: "Search hospital directory listings across India by name, city and state." },
+      { property: "og:description", content: "Find hospitals in Kolkata and nearby West Bengal areas." },
     ],
   }),
   component: HospitalFinder,
@@ -37,13 +37,13 @@ function HospitalFinder() {
     (spec === "all" || h.specialities?.includes(spec) === true) &&
     (type === "all" || h.type === type) &&
     (!bedsOnly || (availableBeds(h) ?? 0) > 0),
-  ), [q, loc, spec, type, bedsOnly]);
+  ).sort((a, b) => Number(b.state === "West Bengal") - Number(a.state === "West Bengal") || a.city.localeCompare(b.city)), [q, loc, spec, type, bedsOnly]);
 
   const reset = () => { setQ(""); setLoc(""); setSpec("all"); setType("all"); setBedsOnly(false); };
 
   return (
     <div>
-      <PageHeader title="Hospital Finder" subtitle="Search hospital directory listings by name, city, state or speciality." icon={<Building2 />} actions={<DemoBadge>Directory listings</DemoBadge>} />
+      <PageHeader title="Hospital Finder" subtitle="Focused on Kolkata and nearby areas including Howrah, Salt Lake, New Town and Park Circus." icon={<Building2 />} actions={<DemoBadge>Directory listings</DemoBadge>} />
       <div className="mb-6 grid gap-3 rounded-2xl border bg-card p-4 shadow-card md:grid-cols-2 lg:grid-cols-5">
         <div className="relative lg:col-span-2">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -51,7 +51,7 @@ function HospitalFinder() {
         </div>
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={loc} onChange={(e) => setLoc(e.target.value)} placeholder="City or state" className="pl-9" aria-label="Location" />
+          <Input value={loc} onChange={(e) => setLoc(e.target.value)} placeholder="Area (e.g. Kolkata, Howrah, Salt Lake)" className="pl-9" aria-label="Location" />
         </div>
         <Select value={spec} onValueChange={setSpec}>
           <SelectTrigger aria-label="Speciality"><SelectValue /></SelectTrigger>
@@ -71,7 +71,7 @@ function HospitalFinder() {
         </Select>
         <div className="flex items-center gap-2 lg:col-span-5">
           <Switch id="beds" checked={bedsOnly} onCheckedChange={setBedsOnly} />
-          <Label htmlFor="beds">Only show hospitals with verified bed counts</Label>
+          <Label htmlFor="beds">Only show hospitals with demo bed counts</Label>
           <span className="ml-auto text-sm text-muted-foreground">{results.length} result{results.length !== 1 && "s"}</span>
         </div>
       </div>
@@ -95,9 +95,11 @@ function HospitalFinder() {
                     </div>
                     <p className="mt-2 flex gap-1.5 text-sm text-muted-foreground"><MapPin className="mt-0.5 h-4 w-4 shrink-0" />{h.city}, {h.state}</p>
                     {h.phone && <a href={`tel:${h.phone.replace(/\s/g, "")}`} className="mt-1 flex gap-1.5 text-sm text-muted-foreground hover:text-foreground">{h.phone}</a>}
-                    <div className="mt-3 flex items-center gap-2 rounded-lg bg-muted p-2 text-sm text-muted-foreground">
-                      <BedDouble className="h-4 w-4" />
-                      {f === null ? "Bed availability not provided or verified" : `${f} beds reported`}
+                    <div className="mt-3 rounded-lg bg-muted p-3 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground"><BedDouble className="h-4 w-4" />{f === null ? "Bed availability: Not reported" : `${f} beds available (simulated)`}</div>
+                      <div className="mt-2 grid grid-cols-3 gap-2 text-xs"><span>General: {h.beds?.general ?? "—"}</span><span>ICU: {h.beds?.icu ?? "—"}</span><span>Emergency: {h.beds?.emergency ?? "—"}</span></div>
+                      <p className="mt-2 text-xs font-medium">Status: {h.bedStatus}</p>
+                      <p className="text-xs text-muted-foreground">Last updated: {h.bedLastUpdated ?? "Not reported"}</p>
                     </div>
                     <div className="mt-4 flex gap-2 pt-1">
                       <Button asChild className="flex-1"><Link to="/hospitals/$id" params={{ id: h.id }}>View details</Link></Button>
@@ -112,7 +114,7 @@ function HospitalFinder() {
         <aside className="xl:sticky xl:top-28 xl:self-start">
           <SchematicMap className="aspect-square" activeId={active} onSelect={setActive}
             points={results.map((h) => ({ id: h.id, x: h.x, y: h.y, label: h.name, tone: availableBeds(h) === 0 ? "emergency" : "teal" }))} />
-          <p className="mt-2 text-xs text-muted-foreground">Markers show directory entries only and are not precise location pins. Bed availability is not verified.</p>
+          <p className="mt-2 text-xs text-muted-foreground">Kolkata-region directory. All displayed bed counts are simulated competition-demo values, not hospital-confirmed live availability.</p>
         </aside>
       </div>
     </div>

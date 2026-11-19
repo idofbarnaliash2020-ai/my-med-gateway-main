@@ -13,9 +13,9 @@ export const Route = createFileRoute("/doctors")({
   head: () => ({
     meta: [
       { title: "Doctor Directory — MediResQ" },
-      { name: "description", content: "Search sample doctor profiles by speciality and location. Profiles are not verified." },
+      { name: "description", content: "Search fictional sample doctor profiles in Kolkata and nearby areas. Profiles are not verified." },
       { property: "og:title", content: "Doctor Directory — MediResQ" },
-      { property: "og:description", content: "Browse sample doctor profiles with qualifications, experience and ratings." },
+      { property: "og:description", content: "Browse Kolkata-region sample doctor profiles with qualifications, experience and ratings." },
     ],
   }),
   component: DoctorsPage,
@@ -35,7 +35,7 @@ function DoctorsPage() {
 
   return (
     <div>
-      <PageHeader title="Doctor Directory" subtitle="Search by speciality and location." icon={<Stethoscope />} />
+      <PageHeader title="Doctor Directory" subtitle="Search by speciality across Kolkata, Howrah, Salt Lake, New Town and Park Circus." icon={<Stethoscope />} />
       <div className="mb-4"><DemoNotice>All profiles below are <strong>sample profiles</strong> and have <strong>not</strong> been verified against the National Medical Commission register. A “Verified” badge would appear only after real credential checks — a future integration.</DemoNotice></div>
       <div className="mb-6 grid gap-3 rounded-2xl border bg-card p-4 shadow-card sm:grid-cols-2 lg:grid-cols-4">
         <div className="relative">

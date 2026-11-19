@@ -71,7 +71,7 @@ function HospitalDetail() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <section className="rounded-2xl border bg-card p-5 shadow-card lg:col-span-2">
-          <h2 className="flex items-center gap-2 font-bold text-primary"><BedDouble className="h-5 w-5 text-teal" /> Bed availability <span className="text-xs font-normal text-muted-foreground">(not live)</span></h2>
+          <h2 className="flex items-center gap-2 font-bold text-primary"><BedDouble className="h-5 w-5 text-teal" /> Bed availability <span className="text-xs font-normal text-muted-foreground">(simulated demo)</span></h2>
           {bedData ? (
             <>
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -83,11 +83,16 @@ function HospitalDetail() {
                   </div>
                 ))}
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">Total capacity: {bedData.total} beds</p>
+              <p className="mt-4 text-sm text-muted-foreground">Total capacity: {bedData.total} beds (illustrative)</p>
+              <div className="mt-3 rounded-lg border border-warning/40 bg-warning-soft p-3 text-sm">
+                <p className="font-semibold">Availability status: {h.bedStatus}</p>
+                <p className="text-xs text-muted-foreground">Last updated: {h.bedLastUpdated ?? "Not reported"}</p>
+                <p className="mt-1 text-xs">These figures are simulated for the competition demo and are not confirmed by this hospital.</p>
+              </div>
               <Progress value={((bedData.total - beds.reduce((a, b) => a + b.free, 0)) / bedData.total) * 100} className="mt-2" />
             </>
           ) : (
-            <p className="mt-3 text-sm text-muted-foreground">Live bed availability and total capacity are not provided or verified.</p>
+            <div className="mt-3 rounded-lg border p-3 text-sm"><p className="font-semibold">Availability status: Not reported</p><p className="text-muted-foreground">General, ICU and emergency bed counts have not been provided. No live availability is claimed.</p></div>
           )}
           <h3 className="mt-6 font-semibold">Specialities</h3>
           {h.specialities ? (

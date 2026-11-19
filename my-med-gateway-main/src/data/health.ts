@@ -1,8 +1,8 @@
 // SAMPLE DATA — patient profile, notifications, and public-health figures are fictional.
 export const notifications = [
-  { id: "n1", type: "info", title: "Blood donation camp (sample)", body: "City General Hospital is hosting a sample donation drive this Sunday.", time: "2h ago" },
-  { id: "n2", type: "warning", title: "Heat advisory (sample)", body: "Stay hydrated. ORS is listed in the Medicine Finder.", time: "5h ago" },
-  { id: "n3", type: "success", title: "Bed availability updated (sample)", body: "National Institute Hospital reported new ICU availability.", time: "Yesterday" },
+  { id: "n1", type: "info", title: "Blood donation camp (sample)", body: "A Kolkata-area hospital is hosting an illustrative donation drive this Sunday.", time: "2h ago" },
+  { id: "n2", type: "warning", title: "Seasonal health advisory (sample)", body: "Illustrative Kolkata public-health notice. Check official sources for current advisories.", time: "5h ago" },
+  { id: "n3", type: "success", title: "Bed availability updated (sample)", body: "A Kolkata hospital directory entry has a simulated bed-count update.", time: "Yesterday" },
 ] as const;
 
 export const samplePatient = {
@@ -32,41 +32,40 @@ export const samplePatient = {
   ],
 };
 
-export const regions = ["North Delhi", "South Delhi", "Gurugram", "Noida", "Ghaziabad", "Faridabad"] as const;
+// Kolkata-first prototype coverage. Other West Bengal districts are a roadmap, not live coverage.
+export const regions = ["Kolkata", "Howrah", "North 24 Parganas", "South 24 Parganas", "Hooghly", "Nadia"] as const;
 
-// Weekly reported cases (sample)
+// Weekly case counts are fictional demo values, not official surveillance reports.
 export const diseaseTrends = [
-  { week: "Aug W1", date: "2026-08-03", dengue: 42, malaria: 18, influenza: 120, gastro: 64 },
-  { week: "Aug W2", date: "2026-08-10", dengue: 55, malaria: 21, influenza: 112, gastro: 70 },
-  { week: "Aug W3", date: "2026-08-17", dengue: 71, malaria: 24, influenza: 105, gastro: 82 },
-  { week: "Aug W4", date: "2026-08-24", dengue: 96, malaria: 22, influenza: 98, gastro: 91 },
-  { week: "Sep W1", date: "2026-08-31", dengue: 128, malaria: 27, influenza: 101, gastro: 88 },
-  { week: "Sep W2", date: "2026-09-07", dengue: 152, malaria: 31, influenza: 110, gastro: 79 },
-  { week: "Sep W3", date: "2026-09-14", dengue: 171, malaria: 29, influenza: 124, gastro: 73 },
-  { week: "Sep W4", date: "2026-09-21", dengue: 164, malaria: 26, influenza: 139, gastro: 70 },
-  { week: "Oct W1", date: "2026-09-28", dengue: 149, malaria: 23, influenza: 158, gastro: 66 },
+  { week: "Oct W1", date: "2026-10-05", dengue: 18, malaria: 7, influenza: 46, gastro: 24 },
+  { week: "Oct W2", date: "2026-10-12", dengue: 22, malaria: 8, influenza: 43, gastro: 27 },
+  { week: "Oct W3", date: "2026-10-19", dengue: 29, malaria: 9, influenza: 41, gastro: 30 },
+  { week: "Oct W4", date: "2026-10-26", dengue: 34, malaria: 11, influenza: 39, gastro: 33 },
+  { week: "Nov W1", date: "2026-11-02", dengue: 41, malaria: 12, influenza: 42, gastro: 31 },
+  { week: "Nov W2", date: "2026-11-09", dengue: 38, malaria: 10, influenza: 45, gastro: 29 },
+  { week: "Nov W3", date: "2026-11-16", dengue: 36, malaria: 9, influenza: 48, gastro: 28 },
 ];
 
 export const regionCapacity = [
-  { region: "North Delhi", occupied: 812, total: 1000 },
-  { region: "South Delhi", occupied: 1180, total: 1400 },
-  { region: "Gurugram", occupied: 520, total: 760 },
-  { region: "Noida", occupied: 610, total: 680 },
-  { region: "Ghaziabad", occupied: 430, total: 600 },
-  { region: "Faridabad", occupied: 300, total: 480 },
+  { region: "Kolkata", occupied: 720, total: 980 },
+  { region: "Howrah", occupied: 310, total: 460 },
+  { region: "North 24 Parganas", occupied: 490, total: 720 },
+  { region: "South 24 Parganas", occupied: 260, total: 410 },
+  { region: "Hooghly", occupied: 230, total: 360 },
+  { region: "Nadia", occupied: 190, total: 310 },
 ];
 
 export const hotspots = [
-  { region: "South Delhi", x: 40, y: 58, level: "high", signal: "Dengue reports above 4-week average" },
-  { region: "Noida", x: 72, y: 45, level: "medium", signal: "Bed occupancy above 85%" },
-  { region: "Gurugram", x: 20, y: 70, level: "low", signal: "Influenza reports rising slowly" },
-  { region: "Ghaziabad", x: 80, y: 22, level: "medium", signal: "Gastro cases clustered in one ward" },
-  { region: "North Delhi", x: 38, y: 22, level: "low", signal: "Within normal range" },
-  { region: "Faridabad", x: 55, y: 84, level: "low", signal: "Within normal range" },
+  { region: "Kolkata", x: 55, y: 52, level: "high", signal: "Illustrative dengue reports above the demo four-week average" },
+  { region: "Howrah", x: 38, y: 61, level: "medium", signal: "Simulated bed occupancy above 70%" },
+  { region: "North 24 Parganas", x: 70, y: 30, level: "medium", signal: "Fictional seasonal influenza reports rising slowly" },
+  { region: "South 24 Parganas", x: 65, y: 82, level: "low", signal: "Illustrative values within the demo range" },
+  { region: "Hooghly", x: 28, y: 35, level: "low", signal: "Illustrative values within the demo range" },
+  { region: "Nadia", x: 80, y: 16, level: "low", signal: "Illustrative values within the demo range" },
 ] as const;
 
 export const simulatedAlerts = [
-  { id: "a1", severity: "High", region: "South Delhi", title: "Possible rise in dengue reports", detail: "Sample rule: weekly dengue reports exceeded 1.5× the 4-week moving average for 3 consecutive weeks. Requires field verification by the district surveillance unit." },
-  { id: "a2", severity: "Medium", region: "Noida", title: "Possible bed capacity strain", detail: "Sample rule: reported occupancy above 85%. Confirm with hospital administrators before redistributing patients." },
-  { id: "a3", severity: "Low", region: "Gurugram", title: "Possible seasonal influenza increase", detail: "Sample rule: influenza reports increased 3 weeks in a row. Likely seasonal; monitor and verify." },
+  { id: "a1", severity: "High", region: "Kolkata", title: "Illustrative rise in dengue reports", detail: "Demo rule: fictional weekly dengue counts exceeded the sample four-week average. This is not a real alert or confirmed outbreak; official surveillance data and field verification are required." },
+  { id: "a2", severity: "Medium", region: "Howrah", title: "Illustrative bed-capacity pressure", detail: "Demo rule: fictional reported occupancy above 70%. Confirm actual capacity with hospital administrators before any action." },
+  { id: "a3", severity: "Low", region: "North 24 Parganas", title: "Illustrative seasonal influenza trend", detail: "Demo rule: fictional influenza counts increased across sample weeks. These values are not real reports; monitor only with verified official data." },
 ];
