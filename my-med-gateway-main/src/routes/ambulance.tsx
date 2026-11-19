@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { DemoOtpDialog } from "@/components/DemoOtpDialog";
 import { DemoNotice, PageHeader } from "@/components/common";
 import { hospitals } from "@/data/hospitals";
+import { createAmbulanceRequest } from "@/lib/api";
 
 const searchSchema = z.object({ destination: z.string().optional() });
 
@@ -19,9 +20,9 @@ export const Route = createFileRoute("/ambulance")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Ambulance Request (Simulated) — MediResQ" },
-      { name: "description", content: "Simulated ambulance request form with validation and confirmation. No ambulance is dispatched." },
-      { property: "og:title", content: "Ambulance Request (Simulated) — MediResQ" },
+      { title: "Ambulance Request Demo — MediResQ" },
+      { name: "description", content: "Demo ambulance request form. Requests are saved to the backend; no ambulance is dispatched." },
+      { property: "og:title", content: "Ambulance Request Demo — MediResQ" },
       { property: "og:description", content: "Try the MediResQ ambulance request flow. Demo only — call 108 or 112 in a real emergency." },
     ],
   }),
@@ -65,13 +66,22 @@ function AmbulancePage() {
     setReviewOpen(true);
   };
 
-  const submit = () => {
+  const submit = async () => {
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      const result = await createAmbulanceRequest({
+        ...data,
+        destination: hospitalName ?? data.destination,
+      });
+      setConfirmed(result.request_id);
       setReviewOpen(false);
-      setConfirmed(`SIM-${Math.floor(100000 + Math.random() * 900000)}`);
-    }, 900);
+      setOtpOpen(false);
+      toast.success("Demo request saved to the backend");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to connect to the backend");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const verifyBeforeSubmit = () => {
@@ -93,8 +103,8 @@ function AmbulancePage() {
     return (
       <div className="mx-auto max-w-xl space-y-6 text-center">
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-success-soft text-success"><CheckCircle2 className="h-9 w-9" /></div>
-        <h1 className="text-2xl font-bold text-primary">Simulated request recorded</h1>
-        <p className="text-muted-foreground">Reference <strong className="text-foreground">{confirmed}</strong>. This was a demonstration only — <strong className="text-foreground">no ambulance has been dispatched</strong> and no one has been notified.</p>
+        <h1 className="text-2xl font-bold text-primary">Demo request saved</h1>
+        <p className="text-muted-foreground">Backend reference <strong className="text-foreground">{confirmed}</strong>. This request was saved for demonstration only; <strong className="text-foreground">no ambulance was dispatched</strong>.</p>
         <div className="rounded-2xl border bg-card p-5 text-left text-sm shadow-card">
           <Summary data={data} hospitalName={hospitalName} />
         </div>
@@ -106,7 +116,7 @@ function AmbulancePage() {
           </div>
         </div>
         <div className="flex justify-center gap-2">
-          <Button variant="outline" onClick={() => { setConfirmed(null); setData({ pickup: "", destination: "", category: "", name: "", phone: "", notes: "" }); }}>New simulated request</Button>
+          <Button variant="outline" onClick={() => { setConfirmed(null); setData({ pickup: "", destination: "", category: "", name: "", phone: "", notes: "" }); }}>New demo request</Button>
           <Button asChild><Link to="/">Back to home</Link></Button>
         </div>
       </div>
@@ -118,10 +128,10 @@ function AmbulancePage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <PageHeader title="Ambulance Request" subtitle="Simulated request flow for demonstration." icon={<Ambulance />} />
+      <PageHeader title="Ambulance Request" subtitle="Demo request form connected to the project backend." icon={<Ambulance />} />
       <div className="mb-6 flex flex-col gap-3 rounded-2xl border-2 border-emergency bg-emergency-soft p-4 sm:flex-row sm:items-center">
         <FlaskConical className="h-6 w-6 shrink-0 text-emergency" />
-        <p className="flex-1 text-sm"><strong>Simulation only.</strong> MediResQ is not connected to any ambulance service. For a real emergency call <strong>108</strong> or <strong>112</strong>.</p>
+        <p className="flex-1 text-sm"><strong>Demo only.</strong> Submissions are stored in this project's backend database and do not dispatch an ambulance. Do not enter real personal or medical details. For a real emergency call <strong>108</strong> or <strong>112</strong>.</p>
         <Button asChild variant="emergency" size="sm"><a href="tel:108"><Phone /> Call 108</a></Button>
       </div>
       <form onSubmit={review} noValidate className="space-y-5 rounded-2xl border bg-card p-5 shadow-card sm:p-6">
@@ -163,23 +173,23 @@ function AmbulancePage() {
         </div>
         <div>
           <Label htmlFor="notes">Additional notes</Label>
-          <Textarea id="notes" className="mt-1.5" value={data.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Patient condition, number of people, access instructions" />
+          <Textarea id="notes" className="mt-1.5" value={data.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Demo notes only — do not enter real medical details" />
         </div>
-        <p className="text-xs text-muted-foreground">Please don't enter real personal or medical details — nothing is stored or sent.</p>
-        <Button type="submit" variant="emergency" size="lg" className="w-full">Review simulated request</Button>
+        <p className="text-xs text-muted-foreground">This demo form sends the entered fields to the configured backend, where requests are stored.</p>
+        <Button type="submit" variant="emergency" size="lg" className="w-full">Review demo request</Button>
       </form>
 
       <Dialog open={reviewOpen} onOpenChange={setReviewOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Review request summary</DialogTitle>
-            <DialogDescription>Submitting creates a simulated reference only. No ambulance will be dispatched.</DialogDescription>
+            <DialogDescription>Continue to save this demo record to the backend. No ambulance will be dispatched; the OTP step is also a demo.</DialogDescription>
           </DialogHeader>
           <div className="text-sm"><Summary data={data} hospitalName={hospitalName} /></div>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setReviewOpen(false)}>Edit</Button>
             <Button variant="emergency" onClick={verifyBeforeSubmit} disabled={submitting}>
-              Verify OTP & submit simulated request
+              Demo OTP & save request
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -187,11 +197,11 @@ function AmbulancePage() {
       <DemoOtpDialog
         open={otpOpen}
         onOpenChange={setOtpOpen}
-        purpose="record the simulated ambulance request"
+        purpose="save the demo ambulance request"
         destination={data.phone || "the contact number entered"}
         onVerified={submit}
       />
-      <div className="mt-6"><DemoNotice>A real integration would connect to a state 108 service or ambulance provider with live tracking. That is a future integration.</DemoNotice></div>
+      <div className="mt-6"><DemoNotice>This is only a database demo, not an ambulance-service integration or live dispatch system. Call 108 or 112 for emergencies.</DemoNotice></div>
     </div>
   );
 }
