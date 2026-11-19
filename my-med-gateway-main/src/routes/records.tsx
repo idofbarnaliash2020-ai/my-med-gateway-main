@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { AlertTriangle, FileHeart, History, Pill, Share2, ShieldCheck, User, XCircle } from "lucide-react";
+import { AlertTriangle, FileHeart, History, LogOut, Pill, Share2, ShieldCheck, User, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DemoOtpDialog } from "@/components/DemoOtpDialog";
-import { PatientSessionGate } from "@/components/PatientSessionGate";
+import { PatientSessionGate, PATIENT_DEMO_SESSION_KEY } from "@/components/PatientSessionGate";
 import { EmptyState, PageHeader } from "@/components/common";
 import { samplePatient as p } from "@/data/health";
 import { doctors } from "@/data/doctors";
@@ -31,6 +31,7 @@ interface Grant { id: string; doctorId: string; scopes: string[]; duration: stri
 type PendingGrant = Omit<Grant, "id">;
 
 function RecordsPage() {
+  const navigate = useNavigate();
   const [grants, setGrants] = useState<Grant[]>([]);
   const [open, setOpen] = useState(false);
   const [otpOpen, setOtpOpen] = useState(false);
@@ -60,7 +61,7 @@ function RecordsPage() {
 
   return (
     <div>
-      <PageHeader title="Patient Medical Records" subtitle="Fictional patient profile for demonstration." icon={<FileHeart />} />
+      <PageHeader title="Patient Medical Records" subtitle="Fictional patient profile for demonstration." icon={<FileHeart />} actions={<Button variant="outline" size="sm" onClick={() => { window.sessionStorage.removeItem(PATIENT_DEMO_SESSION_KEY); void navigate({ to: "/patient-login", replace: true }); }}><LogOut className="mr-2 h-4 w-4" /> Log out</Button>} />
       <div role="note" className="mb-6 flex gap-3 rounded-xl border-2 border-warning/40 bg-warning-soft p-4 text-sm">
         <AlertTriangle className="h-5 w-5 shrink-0 text-warning" />
         <p>
